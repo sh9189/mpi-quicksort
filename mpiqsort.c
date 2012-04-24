@@ -104,7 +104,7 @@ int* mpiqsort(int* input, int globalNumElements, int* dataLengthPtr, MPI_Comm co
 		medianArray = (int *)malloc(sizeof(int)*commSize);
 		MPI_Allgather(&localMedian,1,MPI_INT, medianArray, 1,MPI_INT,comm);
 
-		qsort(medianArray,commSize,sizeof(int),compare);
+		/*qsort(medianArray,commSize,sizeof(int),compare);
 #ifdef DEBUG
 		printf("Rank is %d median Array is\n",commRank);
 		printArray(medianArray,0,commSize-1);
@@ -112,8 +112,34 @@ int* mpiqsort(int* input, int globalNumElements, int* dataLengthPtr, MPI_Comm co
 		if(commSize % 2 == 0)
 			globalMedianIndex = commSize/2 -1;
 		else
-			globalMedianIndex = commSize/2;
-		int globalMedian = medianArray[globalMedianIndex];
+			globalMedianIndex = commSize/2;*/
+		register int k;
+		if(commSize & 1)
+			k = commSize/2;
+		else
+			k = commSize/2-1;
+		register int i,j,l,m ;
+		register int x,temp ;
+		l=0 ; m=commSize-1 ;
+		while (l<m) {
+			x=medianArray[k] ;
+			i=l ;
+			j=m ;
+			do {
+				while (medianArray[i]<x) i++ ;
+				while (x<medianArray[j]) j-- ;
+				if (i<=j) {
+					temp = medianArray[i];
+					medianArray[i] = medianArray[j];
+					medianArray[j] = temp;
+					i++ ; j-- ;
+				}
+			} while (i<=j) ;
+			if (j<k) l=i ;
+			if (k<i) m=j ;
+		}
+		int globalMedian = medianArray[k];
+		//int globalMedian = medianArray[globalMedianIndex];
 #ifdef DEBUG
 		printf("Rank is %d GlobalMedian is %d\n",commRank,globalMedian);
 #endif
