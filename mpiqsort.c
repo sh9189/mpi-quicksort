@@ -85,6 +85,8 @@ int* mpiqsort(int* input, int globalNumElements, int* dataLengthPtr, MPI_Comm co
 
 		if(commSize == 1) // terminating condition
 		{
+			free(currentMirrorArr);
+			free(mergeArr);
 			*dataLengthPtr = numElements;
 			return currentArr;
 		}
