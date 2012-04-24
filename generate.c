@@ -17,6 +17,7 @@ int main(int argc, char** argv)
     printf("n = %d\n", n);
 
     srand(time(NULL));
+    //srand(100);
     fout = fopen("input.txt", "w");
     fprintf(fout, "%d\n", n);
     while(n--)
