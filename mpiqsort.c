@@ -28,9 +28,9 @@ int binary_search(int a[], int low, int high, int target) {
 
 int merge(int * inputArr,int inputElements, int *mergeArr,int mergeElements, int * outputArr)
 {
-	int inputIndex = 0;
-	int mergeIndex  = 0;
-	int outputIndex = 0;
+	register int inputIndex = 0;
+	register int mergeIndex  = 0;
+	register int outputIndex = 0;
 	while(inputIndex < inputElements && mergeIndex < mergeElements)
 	{
 		if(inputArr[inputIndex] <= mergeArr[mergeIndex])
